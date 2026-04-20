@@ -281,10 +281,10 @@ const AnalysisHUD: React.FC<AnalysisHUDProps> = ({ isLight }) => {
         const rawMeters = midiData.header.timeSignatures || [];
         const sortedTempos = [...rawTempos].sort((a, b) => a.ticks - b.ticks);
         const tempoMap = [];
-        let accTime = 0, lastTick = 0, curBpm = sortedTempos[0]?.bpm || 120;
+        let accTime = 0, lastTick = 0, curBpm = 70;
         sortedTempos.forEach(t => {
             accTime += (t.ticks - lastTick) * (60 / (curBpm * ppq));
-            tempoMap.push({ time: accTime, bpm: t.bpm, tick: t.ticks });
+            tempoMap.push({ time: accTime, bpm: 70, tick: t.ticks });
             lastTick = t.ticks; curBpm = t.bpm;
         });
         let meterMap = [];
@@ -294,7 +294,7 @@ const AnalysisHUD: React.FC<AnalysisHUDProps> = ({ isLight }) => {
             meterMap = rawMeters.map(m => {
                 let ref = tempoMap[0];
                 for (let i = tempoMap.length - 1; i >= 0; i--) { if (tempoMap[i].tick <= m.ticks) { ref = tempoMap[i]; break; } }
-                const refBpm = ref ? ref.bpm : 120;
+                const refBpm = 70;
                 const time = (ref ? ref.time : 0) + (m.ticks - (ref ? ref.tick : 0)) * (60 / (refBpm * ppq));
                 return { time, str: m.timeSignature ? `${m.timeSignature[0]}/${m.timeSignature[1]}` : "4/4" };
             }).sort((a, b) => a.time - b.time);
@@ -308,7 +308,7 @@ const AnalysisHUD: React.FC<AnalysisHUDProps> = ({ isLight }) => {
             for (let i = map.length - 1; i >= 0; i--) { if (time >= map[i].time - 0.05) return map[i]; }
             return map[0];
         };
-        let bpm = 120; const tEvent = findEvent(unifiedMaps.tempoMap, currentTime); if (tEvent) bpm = Math.round(tEvent.bpm);
+        let bpm = 70;
         let meter = "4/4"; const mEvent = findEvent(unifiedMaps.meterMap, currentTime); if (mEvent) meter = mEvent.str;
         return { bpm, meter };
     }, [unifiedMaps, currentTime]);

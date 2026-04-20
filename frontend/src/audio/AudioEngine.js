@@ -117,8 +117,7 @@ class AudioEngine {
     this.useInternal = useStore.getState().useInternalAudio;
 
     try {
-      if (midiData.header.tempos.length > 0) Tone.Transport.bpm.value = midiData.header.tempos[0].bpm;
-      else Tone.Transport.bpm.value = 120;
+      Tone.Transport.bpm.value = 70;
       if (midiData.header.timeSignatures.length > 0) Tone.Transport.timeSignature = midiData.header.timeSignatures[0].timeSignature;
     } catch (e) { }
 

@@ -1,11 +1,13 @@
 const API_BASE = '/api/v1';
 
 export const api = {
-  uploadMidi: async (file: File) => {
+  uploadMidi: async (file: File, complexity = 'standard', sensitivity = 2) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('complexity', 'standard');
-    formData.append('window_size', '5.0');
+
+    const winSize = sensitivity === 1 ? 2.0 : (sensitivity === 3 ? 10.0 : 5.0);
+    formData.append('complexity', complexity);
+    formData.append('window_size', winSize.toString());
 
     const response = await fetch(`${API_BASE}/upload`, {
       method: 'POST',
@@ -25,7 +27,6 @@ export const api = {
     formData.append('track_indices', JSON.stringify(trackIndices));
 
     const winSize = sensitivity === 1 ? 2.0 : (sensitivity === 3 ? 10.0 : 5.0);
-
     formData.append('complexity', complexity);
     formData.append('window_size', winSize.toString());
 

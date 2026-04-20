@@ -59,12 +59,12 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({ isLight }) => {
     const tempoMap = [];
     let accTime = 0;
     let lastTick = 0;
-    let curBpm = sortedTempos[0]?.bpm || 120;
+    let curBpm = 70;
 
     sortedTempos.forEach(t => {
       const delta = t.ticks - lastTick;
       accTime += delta * (60 / (curBpm * ppq));
-      tempoMap.push({ time: accTime, bpm: t.bpm, tick: t.ticks });
+      tempoMap.push({ time: accTime, bpm: 70, tick: t.ticks });
       lastTick = t.ticks;
       curBpm = t.bpm;
     });
@@ -84,7 +84,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({ isLight }) => {
         for (let i = tempoMap.length - 1; i >= 0; i--) {
           if (tempoMap[i].tick <= m.ticks) { ref = tempoMap[i]; break; }
         }
-        const refBpm = ref ? ref.bpm : 120;
+        const refBpm = 70;
         const refTime = ref ? ref.time : 0;
         const deltaTick = m.ticks - (ref ? ref.tick : 0);
         const seconds = refTime + deltaTick * (60 / (refBpm * ppq));
@@ -108,7 +108,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({ isLight }) => {
     ].sort((a, b) => a.t - b.t);
 
     let totalMeasures = 0;
-    let currentBpm = 120;
+    let currentBpm = 70;
     if (maps.tempoMap.length) currentBpm = maps.tempoMap[0].bpm;
 
     let currentMeter = maps.meterMap[0];

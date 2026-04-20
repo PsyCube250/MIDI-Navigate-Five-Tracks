@@ -137,12 +137,12 @@ const MidiScene = ({ composerRef }: { composerRef?: React.MutableRefObject<any> 
     const tempoMap = [];
     let accTime = 0;
     let lastTick = 0;
-    let curBpm = sortedTempos[0]?.bpm || 120;
+    let curBpm = 70;
 
     sortedTempos.forEach(t => {
       const delta = t.ticks - lastTick;
       accTime += delta * (60 / (curBpm * ppq));
-      tempoMap.push({ time: accTime, bpm: t.bpm, tick: t.ticks });
+      tempoMap.push({ time: accTime, bpm: 70, tick: t.ticks });
       lastTick = t.ticks;
       curBpm = t.bpm;
     });
@@ -156,7 +156,7 @@ const MidiScene = ({ composerRef }: { composerRef?: React.MutableRefObject<any> 
     let meterIdx = 0;
     let safetyLimit = 10000;
 
-    while (currentTick < (duration * 120 * ppq / 60) * 2 && safetyLimit > 0) {
+    while (currentTick < (duration * 70 * ppq / 60) * 2 && safetyLimit > 0) {
       while (meterIdx < sortedMeters.length - 1 && currentTick >= sortedMeters[meterIdx + 1].ticks) {
         meterIdx++;
       }
@@ -168,7 +168,7 @@ const MidiScene = ({ composerRef }: { composerRef?: React.MutableRefObject<any> 
       for (let i = tempoMap.length - 1; i >= 0; i--) {
         if (tempoMap[i].tick <= currentTick) { refTempo = tempoMap[i]; break; }
       }
-      const refBpm = refTempo ? refTempo.bpm : 120;
+      const refBpm = 70;
       const refTime = refTempo ? refTempo.time : 0;
       const refTick = refTempo ? refTempo.tick : 0;
       const time = refTime + (currentTick - refTick) * (60 / (refBpm * ppq));
